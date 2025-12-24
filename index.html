@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Satisfactory 分配計算機</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true });</script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #222;
+            color: white;
+        }
+
+        input {
+            margin: 5px;
+            padding: 5px;
+        }
+
+        #output {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Satisfactory 分配ロジック生成器</h1>
+    <div>
+        供給量: <input type="number" id="total" value="270"><br>
+        目標量: <input type="number" id="target" value="157.5"><br>
+        <button onclick="generateLogic()">計算してグラフ生成</button>
+    </div>
+
+    <div id="mermaid-container">
+        <pre class="mermaid" id="graph-dest"></pre>
+    </div>
+
+    <script>
+        function generateLogic() {
+            const total = parseFloat(document.getElementById('total').value);
+            const target = parseFloat(document.getElementById('target').value);
+
+            // シンプルな比率計算 (target/total)
+            // 実際にはここで2と3の因数分解ロジックを回す
+            const ratio = target / total;
+
+            // 仮のMermaidコード生成（157.5/270 = 7/12 用の固定ロジック例）
+            // 開発時にはここを自動計算アルゴリズムに置き換える
+            let mermaidCode = `
+            graph TD
+                In[供給: ${total}] --> S1{2等分}
+                S1 -- 135 --> Out1[出力A: 135]
+                S1 -- 135 --> S2{3等分}
+                S2 -- 45 --> S3{2等分}
+                S3 -- 22.5 --> M1((合流))
+                Out1 --> M1
+                M1 --> Final[結果: ${target}]
+            `;
+
+            const container = document.getElementById('graph-dest');
+            container.removeAttribute('data-processed');
+            container.innerHTML = mermaidCode;
+            mermaid.run();
+        }
+    </script>
+</body>
+
+</html>
